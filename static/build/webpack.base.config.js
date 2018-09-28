@@ -1,8 +1,9 @@
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const miniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
+const babelrc = require('../../.babelrc');
 const sourcePath = path.join(__dirname, './static/src');
-const outputPath = require(__dirname, './../output/dist');
+const outputPath = path.join(__dirname, './../output/dist');
 
 module.exports = {
   //入口文件
@@ -20,7 +21,17 @@ module.exports = {
     publicPath: '/static/output/dist/',
     filename: 'js/[name].js'
   },
-
+  
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      name: 'common',
+    },
+    runtimeChunk: {
+      name: 'runtime',
+    },
+    minimize: true
+  },
   //配置编译打包规则
   module: {
     rules: [
@@ -39,25 +50,29 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
-          use: ['css-loader']
-        }),
+        use: [miniCssExtractPlugin.loader, 'css-loader']
       },
       {
         test: /\.scss$/,
-        use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
-          use: ['css-loader', 'sass-loader']
-        })
+        use: [miniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
       },
       {
         test: /\.less$/,
-        use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
-          use: ['css-loader', 'less-loader']
-        })
+        use: [miniCssExtractPlugin.loader, 'css-loader', 'less-loader']
       },
+      {
+        test: /\.(js|jsx)$/,
+        loaders: [
+          'babel?' + JSON.stringify(
+            Object.assign({}, babelrc, {cacheDirectory: true})
+          ),
+          'aslant'
+        ],
+        exclude: /(node_modules|bower_components)/,
+        // query: {
+        //   presets: ['es2015', 'react']
+        // }
+      }
     ]
   },
   resolve: {
@@ -68,11 +83,19 @@ module.exports = {
     ]
   },
   plugins: [
-    new ExtractTextPlugin('css/[name].css'),
-    new webpack.optimize.CommonsChunkPlugin({
-      names: ['vendor'],
-      minChunks: Infinity,
-      filename: 'js/[name].js'
-    })
+    new miniCssExtractPlugin({
+      filename: 'css/[name].css',
+      chunkFilename: "[id].css"
+    }),
+    babel({
+      presets: [['env', { modules: false }], 'stage-2'],
+      exclude: 'node_modules/**',
+      babelrc: false
+    }),
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   names: ['vendor'],
+    //   minChunks: Infinity,
+    //   filename: 'js/[name].js'
+    // })
   ]
 }

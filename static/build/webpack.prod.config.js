@@ -1,5 +1,5 @@
 const webpack = require('webpack');
-const merge = require('merge');
+const merge = require('webpack-merge');
 const baseWebpackConfig = require('./webpack.base.config');
 
 module.exports = merge(baseWebpackConfig, {
@@ -9,12 +9,12 @@ module.exports = merge(baseWebpackConfig, {
         NODE_ENV: JSON.stringify('production')
       }
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      minimize: true,
-      compress: {
-        warnings:false
-      }
-    })
+    // new webpack.optimization({
+    //   minimize: true,
+    //   compress: {
+    //     warnings:false
+    //   }
+    // })
     
   ]
 })
