@@ -12,7 +12,7 @@ module.exports = {
     'work': './static/src/pages/work.js',
     'index': './static/src/pages/index.js',
     'error': './static/src/pages/error.js',
-    vender: ['react', 'react-dom', 'whatwg-fetch'],
+    vendor: ['react', 'react-dom', 'whatwg-fetch'],
   },
 
   //出口文件
