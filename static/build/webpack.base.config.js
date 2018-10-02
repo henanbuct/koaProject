@@ -82,6 +82,8 @@ module.exports = {
       'node_modules'
     ]
   },
+  mode: 'development',
+  //mode: 'production',
   plugins: [
     new miniCssExtractPlugin({
       filename: 'css/[name].css',
