@@ -30,6 +30,7 @@
     "koa-session-minimal": "^3.0.4",
     "koa-static": "^5.0.0",
     "koa-views": "^6.1.4",
+    "mongoose": "^5.3.1",
     "mysql": "^2.16.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
