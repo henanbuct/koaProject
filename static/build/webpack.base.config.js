@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const miniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 const babelrc = require('../../.babelrc');
@@ -32,6 +33,7 @@ module.exports = {
     },
     minimize: true
   },
+
   //配置编译打包规则
   module: {
     rules: [
@@ -82,9 +84,15 @@ module.exports = {
       'node_modules'
     ]
   },
+
+  //模式设置
   mode: 'development',
+
   //mode: 'production',
   plugins: [
+    new webpack.optimize.UgliyfyJsPlugin(),
+    new HtmlWebpackPlugin({template: './src/index.html'}),
+    new webpack.optimize.ConmmonsChunkPlugin({name:'runtime',chunk:['common']}),
     new miniCssExtractPlugin({
       filename: 'css/[name].css',
       chunkFilename: "[id].css"
