@@ -1,6 +1,7 @@
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const miniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');     //打包html
+//const miniCssExtractPlugin = require('mini-css-extract-plugin'); 
+const extractTextWebpackPlugin = require('extract-text-webpack-plugin');   //抽离css
 const path = require('path');
 const babelrc = require('../../.babelrc');
 const sourcePath = path.join(__dirname, './static/src');
@@ -38,32 +39,48 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        use: [
-          {
-            loader: 'babel-loader',
-            query: {
-              //preset: ['es2015'. 'react'],
-              chacheDirectory: true
-            }
-          }
-        ] 
+        test: /\.js$/,
+        include: [
+          path.resolve(__dirname, 'src')
+        ],
+        //exclude: [],   //不匹配选项，优先级高于test和include
+        use: 'babel-loader',
+          
       },
       {
         test: /\.css$/,
-        use: [miniCssExtractPlugin.loader, 'css-loader']
+        use: extractTextWebpackPlugin({
+          fallback: 'style-loader',
+          use: [
+            'css-loader',
+            'style-loader'
+          ]
+        })
       },
       {
-        test: /\.scss$/,
-        use: [miniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
+        test: /\.sass$/,
+        use: extractTextWebpackPlugin({
+          fallback: 'sass-loader',
+          use: [
+            'css-loader',
+            'sass-loader'
+          ]
+          
+        })
       },
       {
         test: /\.less$/,
-        use: [miniCssExtractPlugin.loader, 'css-loader', 'less-loader']
+        use: extractTextWebpackPlugin({
+          fallback: 'sass-loader',
+          use: [
+            'css-loader',
+            'less-loader'
+          ]
+          
+        })
       },
       {
-        test: /\.(js|jsx)$/,
+        test: /\.jsx$/,
         loaders: [
           'babel?' + JSON.stringify(
             Object.assign({}, babelrc, {cacheDirectory: true})
@@ -77,8 +94,12 @@ module.exports = {
       }
     ]
   },
+
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx', '.less', '.css', '.json'],
+    alias: {    //模块别名列表
+      utils: path.resolve(__dirname, 'src/utils')
+    },
     modules: [
       sourcePath,
       'node_modules'
@@ -93,9 +114,8 @@ module.exports = {
     new webpack.optimize.UgliyfyJsPlugin(),
     new HtmlWebpackPlugin({template: './src/index.html'}),
     new webpack.optimize.ConmmonsChunkPlugin({name:'runtime',chunk:['common']}),
-    new miniCssExtractPlugin({
+    new extractTextWebpackPlugin({
       filename: 'css/[name].css',
-      chunkFilename: "[id].css"
     }),
     babel({
       presets: [['env', { modules: false }], 'stage-2'],
