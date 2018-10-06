@@ -91,16 +91,24 @@ module.exports = {
         // query: {
         //   presets: ['es2015', 'react']
         // }
+      },
+      {
+        test: /\.(png|jpg|gif)$/,
+        use: [
+          {
+            loader: 'file-loader'
+          }
+        ]
       }
     ]
   },
 
-  resolve: {
+  resolve: {   //解析模块的可选项
     extensions: ['.js', '.jsx', '.less', '.css', '.json'],
     alias: {    //模块别名列表
       utils: path.resolve(__dirname, 'src/utils')
     },
-    modules: [
+    modules: [    //模块的查找目录
       sourcePath,
       'node_modules'
     ]
@@ -112,7 +120,11 @@ module.exports = {
   //mode: 'production',
   plugins: [
     new webpack.optimize.UgliyfyJsPlugin(),
-    new HtmlWebpackPlugin({template: './src/index.html'}),
+    new HtmlWebpackPlugin({
+      //将模板的头部和尾部添加css和js模板，dist目录发布到服务器上，项目包，可以直接上线
+      file: 'index.html',
+      template: './src/index.html'
+    }),
     new webpack.optimize.ConmmonsChunkPlugin({name:'runtime',chunk:['common']}),
     new extractTextWebpackPlugin({
       filename: 'css/[name].css',
@@ -127,5 +139,18 @@ module.exports = {
     //   minChunks: Infinity,
     //   filename: 'js/[name].js'
     // })
-  ]
+  ],
+
+  //服务端，服务于webpack-dev-server
+  devServer: {
+    port: '8080',
+    before(app){
+      app.get('/app/test.json', (req, res) => {
+        res.json({
+          code: 200,
+          message: 'Hello World'
+        })
+      })
+    }
+  }
 }
