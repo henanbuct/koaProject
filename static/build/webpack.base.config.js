@@ -5,7 +5,7 @@ const extractTextWebpackPlugin = require('extract-text-webpack-plugin');   //抽
 const path = require('path');
 const babelrc = require('../../.babelrc');
 const sourcePath = path.join(__dirname, './static/src');
-const outputPath = path.join(__dirname, './../output/dist');
+const outputPath = path.join(__dirname, '../output/dist');
 
 module.exports = {
   //入口文件
@@ -49,7 +49,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: extractTextWebpackPlugin({
+        use: extractTextWebpackPlugin.extract({
           fallback: 'style-loader',
           use: [
             'css-loader',
@@ -59,7 +59,7 @@ module.exports = {
       },
       {
         test: /\.sass$/,
-        use: extractTextWebpackPlugin({
+        use: extractTextWebpackPlugin.extract({
           fallback: 'sass-loader',
           use: [
             'css-loader',
@@ -70,7 +70,7 @@ module.exports = {
       },
       {
         test: /\.less$/,
-        use: extractTextWebpackPlugin({
+        use: extractTextWebpackPlugin.extract({
           fallback: 'sass-loader',
           use: [
             'css-loader',
@@ -126,9 +126,7 @@ module.exports = {
       template: './src/index.html'
     }),
     new webpack.optimize.ConmmonsChunkPlugin({name:'runtime',chunk:['common']}),
-    new extractTextWebpackPlugin({
-      filename: 'css/[name].css',
-    }),
+    new extractTextWebpackPlugin('[name].css'),
     babel({
       presets: [['env', { modules: false }], 'stage-2'],
       exclude: 'node_modules/**',
