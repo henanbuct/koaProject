@@ -139,16 +139,16 @@ module.exports = {
     // })
   ],
 
-  //服务端，服务于webpack-dev-server
-  devServer: {
-    port: '8080',
-    before(app){
-      app.get('/app/test.json', (req, res) => {
-        res.json({
-          code: 200,
-          message: 'Hello World'
-        })
-      })
-    }
-  }
+  // //服务端，服务于webpack-dev-server
+  // devServer: {
+  //   port: '8080',
+  //   before(app){
+  //     app.get('/app/test.json', (req, res) => {
+  //       res.json({
+  //         code: 200,
+  //         message: 'Hello World'
+  //       })
+  //     })
+  //   }
+  // }
 }
