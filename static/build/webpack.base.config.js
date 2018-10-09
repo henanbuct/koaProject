@@ -115,7 +115,7 @@ module.exports = {
   },
 
   //模式设置
-  mode: 'development',
+  //mode: 'development',
 
   //mode: 'production',
   plugins: [
