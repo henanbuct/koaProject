@@ -39,13 +39,15 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
-        include: [
-          path.resolve(__dirname, 'src')
-        ],
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
         //exclude: [],   //不匹配选项，优先级高于test和include
-        use: 'babel-loader',
-          
+        use:  {
+          loader: 'babel-loader',   //? 使用cache提升编译速度
+          query: {
+            cacheDirectory: true
+          }
+        }   
       },
       {
         test: /\.css$/,
@@ -79,19 +81,19 @@ module.exports = {
           
         })
       },
-      {
-        test: /\.jsx$/,
-        loaders: [
-          'babel?' + JSON.stringify(
-            Object.assign({}, babelrc, {cacheDirectory: true})
-          ),
-          'aslant'
-        ],
-        exclude: /(node_modules|bower_components)/,
-        // query: {
-        //   presets: ['es2015', 'react']
-        // }
-      },
+      // {
+      //   test: /\.jsx$/,
+      //   loaders: [
+      //     'babel?' + JSON.stringify(
+      //       Object.assign({}, babelrc, {cacheDirectory: true})
+      //     ),
+      //     'aslant'
+      //   ],
+      //   exclude: /(node_modules|bower_components)/,
+      //   // query: {
+      //   //   presets: ['es2015', 'react']
+      //   // }
+      // },
       {
         test: /\.(png|jpg|gif)$/,
         use: [
