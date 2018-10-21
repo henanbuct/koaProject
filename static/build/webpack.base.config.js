@@ -3,7 +3,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');     //打包html
 //const miniCssExtractPlugin = require('mini-css-extract-plugin'); 
 const extractTextWebpackPlugin = require('extract-text-webpack-plugin');   //抽离css
 const path = require('path');
-const babelrc = require('../../.babelrc');
 const sourcePath = path.join(__dirname, './static/src');
 const outputPath = path.join(__dirname, '../output/dist');
 
@@ -30,7 +29,7 @@ module.exports = {
       name: 'common',
     },
     runtimeChunk: {
-      name: 'runtime',
+      name: entrypoint => `runtimechunk~${entrypoint.name}`
     },
     minimize: true
   },
@@ -44,12 +43,7 @@ module.exports = {
         //exclude: [],   //不匹配选项，优先级高于test和include
         use:  {
           loader: 'babel-loader',   //? 使用cache提升编译速度
-          // query: {
-          //   cacheDirectory: true
-          // },
-          // options: {
-          //   "presets": [["es2015", {"modules": false}], "react"]
-          // }
+         
         }   
       },
       {
@@ -57,8 +51,7 @@ module.exports = {
         use: extractTextWebpackPlugin.extract({
           fallback: 'style-loader',
           use: [
-            'css-loader',
-            'style-loader'
+            'css-loader'
           ]
         })
       },
@@ -67,8 +60,7 @@ module.exports = {
         use: extractTextWebpackPlugin.extract({
           fallback: 'sass-loader',
           use: [
-            'css-loader',
-            'sass-loader'
+            'css-loader'
           ]
           
         })
@@ -78,25 +70,11 @@ module.exports = {
         use: extractTextWebpackPlugin.extract({
           fallback: 'sass-loader',
           use: [
-            'css-loader',
-            'less-loader'
+            'css-loader'
           ]
           
         })
       },
-      // {
-      //   test: /\.jsx$/,
-      //   loaders: [
-      //     'babel?' + JSON.stringify(
-      //       Object.assign({}, babelrc, {cacheDirectory: true})
-      //     ),
-      //     'aslant'
-      //   ],
-      //   exclude: /(node_modules|bower_components)/,
-      //   // query: {
-      //   //   presets: ['es2015', 'react']
-      //   // }
-      // },
       {
         test: /\.(png|jpg|gif)$/,
         use: [
@@ -130,35 +108,6 @@ module.exports = {
       //将模板的头部和尾部添加css和js模板，dist目录发布到服务器上，项目包，可以直接上线
       file: 'index.html',
       template: './src/index.html'
-    }),
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   names: ['vendor'],
-    //   minChunks: Infinity,
-    //   filename: 'js/[name].js'
-    // }),
-    
-    // babel({
-    //   presets: [['env', { modules: false }], 'stage-2'],
-    //   exclude: 'node_modules/**',
-    //   babelrc: false
-    // }),
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   names: ['vendor'],
-    //   minChunks: Infinity,
-    //   filename: 'js/[name].js'
-    // })
+    })
   ],
-
-  // //服务端，服务于webpack-dev-server
-  // devServer: {
-  //   port: '8080',
-  //   before(app){
-  //     app.get('/app/test.json', (req, res) => {
-  //       res.json({
-  //         code: 200,
-  //         message: 'Hello World'
-  //       })
-  //     })
-  //   }
-  // }
 }
