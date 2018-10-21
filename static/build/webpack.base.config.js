@@ -44,12 +44,12 @@ module.exports = {
         //exclude: [],   //不匹配选项，优先级高于test和include
         use:  {
           loader: 'babel-loader',   //? 使用cache提升编译速度
-          query: {
-            cacheDirectory: true
-          },
-          options: {
-            "presets": [["es2015", {"modules": false}], "react"]
-          }
+          // query: {
+          //   cacheDirectory: true
+          // },
+          // options: {
+          //   "presets": [["es2015", {"modules": false}], "react"]
+          // }
         }   
       },
       {
@@ -124,24 +124,24 @@ module.exports = {
 
   //mode: 'production',
   plugins: [
-    new webpack.optimize.UgliyfyJsPlugin(),
+    //new webpack.optimize.UgliyfyJsPlugin(),
     new extractTextWebpackPlugin('css/[name].css'),
     new HtmlWebpackPlugin({
       //将模板的头部和尾部添加css和js模板，dist目录发布到服务器上，项目包，可以直接上线
       file: 'index.html',
       template: './src/index.html'
     }),
-    new webpack.optimize.ConmmonsChunkPlugin({
-      names: ['vendor'],
-      minChunks: Infinity,
-      filename: 'js/[name].js'
-    }),
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   names: ['vendor'],
+    //   minChunks: Infinity,
+    //   filename: 'js/[name].js'
+    // }),
     
-    babel({
-      presets: [['env', { modules: false }], 'stage-2'],
-      exclude: 'node_modules/**',
-      babelrc: false
-    }),
+    // babel({
+    //   presets: [['env', { modules: false }], 'stage-2'],
+    //   exclude: 'node_modules/**',
+    //   babelrc: false
+    // }),
     // new webpack.optimize.CommonsChunkPlugin({
     //   names: ['vendor'],
     //   minChunks: Infinity,
