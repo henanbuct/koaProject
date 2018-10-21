@@ -46,6 +46,9 @@ module.exports = {
           loader: 'babel-loader',   //? 使用cache提升编译速度
           query: {
             cacheDirectory: true
+          },
+          options: {
+            "presets": [["es2015", {"modules": false}], "react"]
           }
         }   
       },
