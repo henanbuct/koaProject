@@ -1,4 +1,4 @@
-const dbUtils = require('./../utils/db-util')
+const dbUtils = require('../utils/db-util')
 const user = {
   /**
    * 数据库创建用户

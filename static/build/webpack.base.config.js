@@ -104,10 +104,10 @@ module.exports = {
   plugins: [
     //new webpack.optimize.UgliyfyJsPlugin(),
     new extractTextWebpackPlugin('css/[name].css'),
-    new HtmlWebpackPlugin({
-      //将模板的头部和尾部添加css和js模板，dist目录发布到服务器上，项目包，可以直接上线
-      file: 'index.html',
-      template: './src/index.html'
-    })
+    // new HtmlWebpackPlugin({
+    //   //将模板的头部和尾部添加css和js模板，dist目录发布到服务器上，项目包，可以直接上线
+    //   file: 'index.html',
+    //   template: './src/index.html'
+    // })
   ],
 }
