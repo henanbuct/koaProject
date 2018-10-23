@@ -1,3 +1,5 @@
+const router = require('koa-router')()
+
 //整合所有子路由
 const home = require('./home');
 const api = require('./api');

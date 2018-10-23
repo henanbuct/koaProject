@@ -114,6 +114,7 @@ module.exports = {
       message: '',
       data: null,
     }
+    
     if ( isLogin === true && userName ) {
       let userInfo = await userInfoService.getUserInfoByUserName( userName )
       if ( userInfo ) {
